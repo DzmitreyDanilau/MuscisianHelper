@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "890478332099",
+    "firebase_url": "https://muzhelpermessenger.firebaseio.com",
+    "project_id": "muzhelpermessenger",
+    "storage_bucket": "muzhelpermessenger.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:890478332099:android:ed05b07bb4dac067567a76",
+        "android_client_info": {
+          "package_name": "com.musicianhelper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "890478332099-72npdlqriepoqegg3tt3j2m19gk8qude.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLiAu5TmpJLQ0hbDkb_X9VGB7LQN_elMM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "890478332099-72npdlqriepoqegg3tt3j2m19gk8qude.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

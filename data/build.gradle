@@ -1,0 +1,18 @@
+plugins {
+    id 'java-library'
+    id 'kotlin'
+}
+apply from: '../dependencies.gradle'
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    api google.findBugs
+
+    implementation kotlin.stdlib8
+    implementation kotlin_coroutines.core
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"

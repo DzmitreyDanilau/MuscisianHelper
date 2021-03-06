@@ -1,0 +1,82 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
+}
+apply from: '../dependencies.gradle'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "com.musicianhelper"
+        minSdkVersion min_sdk_version
+        targetSdkVersion sdk_version
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':domain')
+
+    implementation androidx.coreKtx
+    implementation androidx.appcompat
+    implementation androidx.constraintLayout
+    implementation androidx.drawerLayout
+    implementation androidx.recyclerView
+
+    implementation androidx.preference.preferenceKtx
+
+    implementation androidx.lifecycle.common
+    implementation androidx.lifecycle.runtimeKtx
+    implementation androidx.lifecycle.viewModelKtx
+    implementation androidx.lifecycle.liveDataKtx
+    implementation androidx.lifecycle.extensionsLegacy
+
+    implementation androidx.navigation.fragmentKtx
+    implementation androidx.navigation.uiKtx
+
+    implementation hilt.hilt
+    kapt hilt.compiler
+
+    implementation google.material
+    implementation google.findBugs
+    implementation google.playServicesAuth
+
+    implementation uiUtil.formEditText
+
+    implementation util.timber
+
+    implementation firebase.authKtx
+    implementation firebase.auth
+
+    //test
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
