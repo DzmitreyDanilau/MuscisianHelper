@@ -10,6 +10,8 @@ dependencies {
 
     implementation kotlin.stdlib8
     implementation kotlin_coroutines.core
+    implementation util.timber
+
 }
 
 repositories {

@@ -12,6 +12,7 @@ dependencies {
 
     implementation kotlin.stdlib8
     implementation kotlin_coroutines.core
+    implementation kotlin_coroutines.core
 }
 
 sourceCompatibility = "8"

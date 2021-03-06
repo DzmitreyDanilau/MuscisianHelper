@@ -37,18 +37,25 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':domain')
+    implementation project(':authentication')
 
     implementation androidx.coreKtx
     implementation androidx.appcompat
     implementation androidx.constraintLayout
     implementation androidx.drawerLayout
     implementation androidx.recyclerView
+    implementation androidx.activityKtx
+    implementation androidx.fragmentKtx
 
     implementation androidx.preference.preferenceKtx
 
@@ -61,7 +68,15 @@ dependencies {
     implementation androidx.navigation.fragmentKtx
     implementation androidx.navigation.uiKtx
 
-    implementation hilt.hilt
+//    implementation dagger.dagger
+////    kapt dagger.compiler
+////    implementation dagger.android
+////    implementation dagger.androidSupport
+////    kapt dagger.androidProcessor
+
+    implementation hilt.dagger
+    implementation hilt.navigation
+    implementation hilt.viewModel
     kapt hilt.compiler
 
     implementation google.material
