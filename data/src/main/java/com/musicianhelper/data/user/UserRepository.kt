@@ -1,11 +1,14 @@
 package com.musicianhelper.data.user
 
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 
-class UserRepository : UserProvider, UserUpdater {
+class UserRepository(
+    dispatcher: CoroutineDispatcher
+) : UserProvider, UserUpdater {
     /**
      * Emits user data starting with the current one.
      */
@@ -16,7 +19,7 @@ class UserRepository : UserProvider, UserUpdater {
 
     override fun updateUser(user: UserModel): Flow<Result<UserModel>> {
         return flow {
-            Result.success(user)
-        }
+
+        }.flow
     }
 }

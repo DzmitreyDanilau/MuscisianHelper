@@ -26,7 +26,7 @@ class FirebaseAuthManager {
         }
     }
 
-    suspend fun registerWithEmail(userCredentials: UserCredentials): FirebaseUser {
+    suspend fun registerWithEmail(userCredentials: UserCredentials): FirebaseAuthResult {
         return authWithEmailAndPassword(userCredentials)
 
     }
@@ -42,15 +42,14 @@ class FirebaseAuthManager {
         return firebaseAuth.currentUser ?: throw FirebaseAuthException("", "")
     }
 
-    private suspend fun authWithEmailAndPassword(userCredentials: UserCredentials): FirebaseUser {
+    private suspend fun authWithEmailAndPassword(userCredentials: UserCredentials): FirebaseAuthResult {
         return try {
             firebaseAuth
                 .createUserWithEmailAndPassword(userCredentials.email, userCredentials.password)
                 .await()
-            firebaseAuth.currentUser ?: throw FirebaseAuthException("", "")
+            FirebaseAuthResult.Success(firebaseAuth.currentUser)
         } catch (e: Exception) {
-            val message = e.message
-            firebaseAuth.currentUser ?: throw FirebaseAuthException("", "")
+            FirebaseAuthResult.Failed(e.message)
         }
     }
 

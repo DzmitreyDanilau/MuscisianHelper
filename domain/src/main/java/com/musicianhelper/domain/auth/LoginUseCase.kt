@@ -7,26 +7,30 @@ import com.musicianhelper.domain.base.Result
 import com.musicianhelper.domain.base.UseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class LoginUseCase(private val repository: UserUpdater) : UseCase{
+class LoginUseCase(private val repository: UserUpdater) : UseCase<LoginAction> {
 
-    override fun invoke(): Flow<Result> {
-        return repository.updateUser(UserModel("dasds"))
-            .map { result ->
-                result.fold(
-                    {
-                        LoginResult.Success("dasds")
-                    },
-                    {
-                        LoginResult.Error(it.message!!)
-                    }
-                )
-            }.catch { LoginResult.Error(it.message!!) }
+    override suspend fun invoke(action: LoginAction): Flow<Result> {
+        return coroutineScope {
+            repository.updateUser(UserModel("dasds"))
+                .map { result ->
+                    result.fold(
+                        {
+                            LoginResult.Success("dasds")
+                        },
+                        {
+                            LoginResult.Error(it.message!!)
+                        }
+                    )
+                }.catch { LoginResult.Error(it.message!!) }
+        }
+
     }
 }
 
