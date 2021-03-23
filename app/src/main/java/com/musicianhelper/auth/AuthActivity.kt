@@ -1,14 +1,10 @@
 package com.musicianhelper.auth
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.musicianhelper.MusicianHelperApp
 import com.musicianhelper.R
-import dagger.hilt.EntryPoint
-import dagger.hilt.android.AndroidEntryPoint
+import dagger.android.support.DaggerAppCompatActivity
 
-@AndroidEntryPoint
-class AuthActivity : AppCompatActivity() {
+class AuthActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

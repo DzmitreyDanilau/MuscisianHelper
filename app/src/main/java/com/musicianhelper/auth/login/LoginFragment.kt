@@ -1,39 +1,41 @@
 package com.musicianhelper.auth.login
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
 import com.musicianhelper.R
 import com.musicianhelper.base.BaseFragment
-import com.musicianhelper.base.Event
 import com.musicianhelper.base.StatePresenter
 import com.musicianhelper.base.ViewEventFlow
 import com.musicianhelper.databinding.FragmentLoginBinding
 import com.musicianhelper.viewBinding
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-@AndroidEntryPoint
 class LoginFragment : BaseFragment(R.layout.fragment_login), ViewEventFlow<LoginState> {
 
     val binding: FragmentLoginBinding by viewBinding(FragmentLoginBinding::bind)
 
-    private val viewModel: LoginViewModel by viewModels()
+    @Inject
+    lateinit var viewModelFactory: LoginViewModelFactory
+
+    private val viewModel: LoginViewModel by viewModels { viewModelFactory }
+
     private lateinit var statePresenter: StatePresenter<LoginStateRenderer, LoginState>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scope.launch {
-            viewEvents()
-                .onEach { }
-                .collect()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.btnLogin.setOnClickListener {
+            login()
         }
     }
 
-    override fun event(event: Event) {
-        viewModel.viewStates().value = event
+    fun login() {
+        viewModel.register()
     }
 
     private fun getStateObserver() {

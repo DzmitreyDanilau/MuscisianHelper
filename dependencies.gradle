@@ -57,16 +57,6 @@ ext {
             androidProcessor: "com.google.dagger:dagger-android-processor:$dagger_version"
     ]
 
-    final dagger_hilt = '2.33-beta'
-    final dagger_hilt_navigation = '1.0.0-alpha03'
-    final dagger_hilt_viewModel = '1.0.0-alpha03'
-    hilt = [
-            dagger    : "com.google.dagger:hilt-android:$dagger_hilt",
-            compiler  : "com.google.dagger:hilt-compiler:$dagger_hilt",
-            navigation: "androidx.hilt:hilt-navigation-fragment:$dagger_hilt_navigation",
-            viewModel : "androidx.hilt:hilt-lifecycle-viewmodel:$dagger_hilt_viewModel"
-    ]
-
     final glide_version = '4.11.0'
     glide = [
             glide   : "com.github.bumptech.glide:glide:$glide_version",

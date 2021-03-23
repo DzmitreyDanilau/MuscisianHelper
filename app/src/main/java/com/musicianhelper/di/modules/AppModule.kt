@@ -1,10 +1,14 @@
 package com.musicianhelper.di.modules
 
-import com.musicianhelper.auth.AuthModule
+import com.musicianhelper.MusicianHelperApp
+import com.musicianhelper.di.scopes.Application
 import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.Provides
 
-@InstallIn(SingletonComponent::class)
-@Module(includes = [AuthModule::class])
-object AppModule
+@Module(includes = [DispatchersModule::class])
+object AppModule {
+
+    @Provides
+    @Application
+    fun provideApplicationContext(application: MusicianHelperApp) = application
+}

@@ -15,6 +15,8 @@ interface UserProvider {
 }
 
 interface UserUpdater {
-    fun updateUser(user: UserModel) : Flow<UserModel>
+
+    fun updateUser(user: UserModel): Flow<Result<UserModel>>
+
 }
 

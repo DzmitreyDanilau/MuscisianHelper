@@ -1,7 +1,13 @@
 package com.musicianhelper
 
-import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import com.musicianhelper.di.components.DaggerMuzHelperComponent
+import dagger.android.AndroidInjector
+import dagger.android.support.DaggerApplication
 
-@HiltAndroidApp
-class MusicianHelperApp : Application()
+class MusicianHelperApp : DaggerApplication() {
+
+    override fun applicationInjector(): AndroidInjector<MusicianHelperApp> {
+      return  DaggerMuzHelperComponent.factory().create(this)
+    }
+
+}

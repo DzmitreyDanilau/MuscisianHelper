@@ -2,9 +2,9 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
 }
+
 apply from: '../dependencies.gradle'
 
 android {
@@ -68,16 +68,11 @@ dependencies {
     implementation androidx.navigation.fragmentKtx
     implementation androidx.navigation.uiKtx
 
-//    implementation dagger.dagger
-////    kapt dagger.compiler
-////    implementation dagger.android
-////    implementation dagger.androidSupport
-////    kapt dagger.androidProcessor
-
-    implementation hilt.dagger
-    implementation hilt.navigation
-    implementation hilt.viewModel
-    kapt hilt.compiler
+    implementation dagger.dagger
+    kapt dagger.compiler
+    implementation dagger.android
+    implementation dagger.androidSupport
+    kapt dagger.androidProcessor
 
     implementation google.material
     implementation google.findBugs

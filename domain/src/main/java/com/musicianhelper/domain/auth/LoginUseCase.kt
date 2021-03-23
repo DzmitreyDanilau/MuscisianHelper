@@ -7,24 +7,33 @@ import com.musicianhelper.domain.base.Result
 import com.musicianhelper.domain.base.UseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class LoginUseCase(private val repository: UserUpdater) : UseCase<LoginAction, LoginResult> {
-    /**
-     * Collects the value emitted by the upstream.
-     * This method is not thread-safe and should not be invoked concurrently.
-     */
-    override suspend fun emit(value: LoginAction) {
-        TODO("Not yet implemented")
-    }
+class LoginUseCase(private val repository: UserUpdater) : UseCase{
 
-    suspend operator fun invoke(action: LoginAction) = repository.updateUser(user)
+    override fun invoke(): Flow<Result> {
+        return repository.updateUser(UserModel("dasds"))
+            .map { result ->
+                result.fold(
+                    {
+                        LoginResult.Success("dasds")
+                    },
+                    {
+                        LoginResult.Error(it.message!!)
+                    }
+                )
+            }.catch { LoginResult.Error(it.message!!) }
+    }
 }
 
 data class LoginAction(val user: UserModel) : Action
+
 sealed class LoginResult : Result {
     object InProgress : LoginResult()
-    object Success : LoginResult()
+    data class Success(val userName: String) : LoginResult()
     data class Error(val error: String) : LoginResult()
 }

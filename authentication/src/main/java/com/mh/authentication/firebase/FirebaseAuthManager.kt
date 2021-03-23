@@ -5,8 +5,6 @@ import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @Suppress("JAVA_CLASS_ON_COMPANION")
@@ -28,10 +26,9 @@ class FirebaseAuthManager {
         }
     }
 
-    suspend fun registerWithEmailAndPassword(userCredentials: UserCredentials): Flow<FirebaseUser> {
-        return flow {
-            authWithEmailAndPassword(userCredentials)
-        }
+    suspend fun registerWithEmail(userCredentials: UserCredentials): FirebaseUser {
+        return authWithEmailAndPassword(userCredentials)
+
     }
 
     suspend fun loginInWithEmailAndPassword(userCredentials: UserCredentials): FirebaseUser {
@@ -46,10 +43,15 @@ class FirebaseAuthManager {
     }
 
     private suspend fun authWithEmailAndPassword(userCredentials: UserCredentials): FirebaseUser {
-        firebaseAuth
-            .createUserWithEmailAndPassword(userCredentials.email, userCredentials.password)
-            .await()
-        return firebaseAuth.currentUser ?: throw FirebaseAuthException("", "")
+        return try {
+            firebaseAuth
+                .createUserWithEmailAndPassword(userCredentials.email, userCredentials.password)
+                .await()
+            firebaseAuth.currentUser ?: throw FirebaseAuthException("", "")
+        } catch (e: Exception) {
+            val message = e.message
+            firebaseAuth.currentUser ?: throw FirebaseAuthException("", "")
+        }
     }
 
     private suspend fun signInWithEmailAndPassword(userCredentials: UserCredentials): FirebaseUser {

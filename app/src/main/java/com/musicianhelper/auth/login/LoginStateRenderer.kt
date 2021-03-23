@@ -16,7 +16,7 @@ class LoginStateRenderer @Inject constructor(
     }
 
     fun render(state: LoginState.LoggedIn) {
-        fragment.event(LogIn)
+        fragment.login()
     }
 
     fun render(state: LoginState.Error) {
