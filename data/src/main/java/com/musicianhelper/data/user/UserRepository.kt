@@ -20,6 +20,6 @@ class UserRepository(
     override fun updateUser(user: UserModel): Flow<Result<UserModel>> {
         return flow {
 
-        }.flow
+        }
     }
 }

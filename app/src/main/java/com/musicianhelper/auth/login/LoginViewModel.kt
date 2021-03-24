@@ -1,13 +1,13 @@
 package com.musicianhelper.auth.login
 
+import android.service.autofill.UserData
 import androidx.lifecycle.viewModelScope
-import com.mh.authentication.firebase.FirebaseAuthManager
 import com.mh.authentication.firebase.FirebaseAuthResult
-import com.mh.authentication.firebase.UserCredentials
 import com.musicianhelper.base.BaseViewModel
 import com.musicianhelper.base.Event
 import com.musicianhelper.data.user.UserModel
 import com.musicianhelper.domain.auth.LoginAction
+import com.musicianhelper.domain.auth.LoginResult
 import com.musicianhelper.domain.base.Result
 import com.musicianhelper.domain.base.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -21,15 +21,13 @@ import javax.inject.Inject
 @FlowPreview
 class LoginViewModel @Inject constructor(
     mainDispatcher: CoroutineDispatcher,
-    private val authManager: FirebaseAuthManager,
-    private val updateUser: UseCase<LoginAction>
+    private val updateUser: UseCase<LoginAction, LoginResult>
 ) : BaseViewModel<LoginState>(mainDispatcher, LoginState.Idle) {
 
 
     fun register() {
         viewModelScope.launch {
-            val result = authManager.registerWithEmail(UserCredentials("tesd@gmail.com", "123456"))
-            saveUser(result)
+            updateUser.invoke(LoginAction(UserModel("")))
         }
     }
 
@@ -40,7 +38,7 @@ class LoginViewModel @Inject constructor(
     fun saveUser(authResult: FirebaseAuthResult) {
         when (authResult) {
             is FirebaseAuthResult.Success -> {
-                updateUser.invoke(LoginAction(UserModel(authResult.user?.displayName ?: "")))
+//                updateUser.invoke(LoginAction(UserModel(authResult.user?.displayName ?: "")))
             }
         }
     }

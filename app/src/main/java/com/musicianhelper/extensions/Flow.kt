@@ -2,7 +2,6 @@
 
 package com.musicianhelper.extensions
 
-import com.musicianhelper.domain.base.FlowTransformer
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -78,10 +77,3 @@ fun <U, V> Flow<U>.cast(clazz: Class<V>): Flow<V> {
         clazz.cast(it)
     }
 }
-
-fun <A, R> compose(transformer: FlowTransformer<in A, out R>): Flow<R> {
-    return flow {
-
-    }
-}
-

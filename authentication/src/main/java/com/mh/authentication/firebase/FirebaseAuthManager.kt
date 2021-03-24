@@ -5,33 +5,47 @@ import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.musicianhelper.data.user.UserModel
+import com.musicianhelper.domain.auth.AuthResult
+import com.musicianhelper.domain.auth.Authentication
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.tasks.await
 
 @Suppress("JAVA_CLASS_ON_COMPANION")
-class FirebaseAuthManager {
+class FirebaseAuthManager : Authentication {
 
     companion object {
         private val TAG = FirebaseAuthManager.javaClass.name
     }
 
+    private val firebaseAuthResult: MutableSharedFlow<AuthResult> = MutableSharedFlow()
+
     private val firebaseAuth = Firebase.auth
 
-    fun getCurrentFirebaseUser(): FirebaseUser? {
-        return firebaseAuth.currentUser
+    override val authResult: SharedFlow<AuthResult> = firebaseAuthResult.asSharedFlow()
+
+    override fun register() {
+        TODO("Not yet implemented")
     }
 
-    suspend fun googleAuthForFirebase(credentials: AuthCredential?): FirebaseUser? {
+    override suspend fun login() {
+        authWithEmailAndPassword(UserCredentials("tesd@gmail.com", "123456"))
+    }
+
+    private suspend fun googleAuthForFirebase(credentials: AuthCredential?): FirebaseUser? {
         return credentials?.let {
             authWithGoogle(credentials)
         }
     }
 
-    suspend fun registerWithEmail(userCredentials: UserCredentials): FirebaseAuthResult {
+    private suspend fun registerWithEmail(userCredentials: UserCredentials) {
         return authWithEmailAndPassword(userCredentials)
 
     }
 
-    suspend fun loginInWithEmailAndPassword(userCredentials: UserCredentials): FirebaseUser {
+    private suspend fun loginInWithEmailAndPassword(userCredentials: UserCredentials): FirebaseUser {
         return signInWithEmailAndPassword(userCredentials)
     }
 
@@ -42,14 +56,20 @@ class FirebaseAuthManager {
         return firebaseAuth.currentUser ?: throw FirebaseAuthException("", "")
     }
 
-    private suspend fun authWithEmailAndPassword(userCredentials: UserCredentials): FirebaseAuthResult {
-        return try {
+    private suspend fun authWithEmailAndPassword(userCredentials: UserCredentials) {
+        try {
             firebaseAuth
                 .createUserWithEmailAndPassword(userCredentials.email, userCredentials.password)
                 .await()
-            FirebaseAuthResult.Success(firebaseAuth.currentUser)
+            firebaseAuthResult.emit(
+                AuthResult.Success(
+                    user = UserModel(
+                        firebaseAuth.currentUser?.displayName ?: ""
+                    )
+                )
+            )
         } catch (e: Exception) {
-            FirebaseAuthResult.Failed(e.message)
+            firebaseAuthResult.emit(AuthResult.Failed(e.message))
         }
     }
 
