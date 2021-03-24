@@ -22,7 +22,7 @@ abstract class BaseViewModel<S>(
     protected val viewState: MutableStateFlow<S> = MutableStateFlow(initialState)
     val actions: MutableSharedFlow<Action> = MutableSharedFlow()
 
-    protected fun getState(): StateFlow<S> = viewState
+    fun getState(): StateFlow<S> = viewState
 
 //    protected abstract fun processAction(action: Action): Flow<Result>
 

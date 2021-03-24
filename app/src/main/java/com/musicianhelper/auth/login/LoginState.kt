@@ -22,7 +22,7 @@ sealed class LoginState : State<LoginStateRenderer> {
         }
     }
 
-    object Error : LoginState() {
+    data class Error(val error: String) : LoginState() {
         override fun accept(stateRenderer: LoginStateRenderer) {
             stateRenderer.render(this)
         }

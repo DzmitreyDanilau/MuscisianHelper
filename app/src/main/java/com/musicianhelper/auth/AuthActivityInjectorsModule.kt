@@ -4,6 +4,7 @@ import com.mh.authentication.firebase.FirebaseAuthManager
 import com.musicianhelper.auth.login.LoginFragment
 import com.musicianhelper.data.user.UserRepository
 import com.musicianhelper.data.user.UserUpdater
+import com.musicianhelper.di.modules.BaseFragmentModule
 import com.musicianhelper.di.modules.DispatchersModule
 import com.musicianhelper.di.scopes.ActivityScope
 import com.musicianhelper.di.scopes.FragmentScope
@@ -31,12 +32,16 @@ abstract class AuthActivityInjectorsModule {
             FirebaseAuthModule::class,
             AuthUseCaseModule::class,
             AuthRepositoryModule::class,
-            AuthenticationFireabaseModule::class
+            AuthenticationFireabaseModule::class,
+            LoginFragmentModule::class
         ]
     )
     abstract fun contributeLoginFragmentInjector(): LoginFragment
 
 }
+
+@Module
+class LoginFragmentModule : BaseFragmentModule<LoginFragment>()
 
 @Module
 object FirebaseAuthModule {

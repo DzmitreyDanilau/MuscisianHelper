@@ -8,6 +8,7 @@ import com.google.firebase.ktx.Firebase
 import com.musicianhelper.data.user.UserModel
 import com.musicianhelper.domain.auth.AuthResult
 import com.musicianhelper.domain.auth.Authentication
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -20,7 +21,8 @@ class FirebaseAuthManager : Authentication {
         private val TAG = FirebaseAuthManager.javaClass.name
     }
 
-    private val firebaseAuthResult: MutableSharedFlow<AuthResult> = MutableSharedFlow()
+    private val firebaseAuthResult: MutableSharedFlow<AuthResult> =
+        MutableSharedFlow(replay = 1)
 
     private val firebaseAuth = Firebase.auth
 

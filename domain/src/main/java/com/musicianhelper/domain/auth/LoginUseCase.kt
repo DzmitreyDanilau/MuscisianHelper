@@ -7,7 +7,6 @@ import com.musicianhelper.domain.base.Result
 import com.musicianhelper.domain.base.UseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 
 @FlowPreview
@@ -17,17 +16,14 @@ class LoginUseCase constructor(
     private val repository: UserUpdater
 ) : UseCase<LoginAction, LoginResult> {
 
-    override suspend fun invoke(action: LoginAction): LoginResult {
-        subscribe()
-        auth.login()
-        return LoginResult.Success("")
-    }
-
-    suspend fun subscribe() {
-        auth.authResult.shareIn(coroutineScope}) {
-            when (it) {
-                is AuthResult.Success -> updateUser(it.user)
-                is AuthResult.Failed -> LoginResult.Error(it.error!!)
+    override suspend fun invoke(action: LoginAction): Flow<LoginResult> {
+        return flow {
+            auth.login()
+            auth.authResult.collect {
+                when (it) {
+                    is AuthResult.Success -> updateUser(it.user)
+                    is AuthResult.Failed -> emit(LoginResult.Error(it.error!!))
+                }
             }
         }
     }

@@ -1,8 +1,6 @@
 package com.musicianhelper.auth.login
 
-import android.service.autofill.UserData
 import androidx.lifecycle.viewModelScope
-import com.mh.authentication.firebase.FirebaseAuthResult
 import com.musicianhelper.base.BaseViewModel
 import com.musicianhelper.base.Event
 import com.musicianhelper.data.user.UserModel
@@ -14,6 +12,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,23 +24,28 @@ class LoginViewModel @Inject constructor(
     private val updateUser: UseCase<LoginAction, LoginResult>
 ) : BaseViewModel<LoginState>(mainDispatcher, LoginState.Idle) {
 
-
     fun register() {
         viewModelScope.launch {
             updateUser.invoke(LoginAction(UserModel("")))
+                .map {
+                    when (it) {
+                        is LoginResult.Success -> {
+                            viewState.emit(LoginState.LoggedIn("Dima"))
+                        }
+                        is LoginResult.Error -> {
+                            viewState.emit(LoginState.Error(it.error))
+                        }
+                        is LoginResult.InProgress -> {
+                            viewState.emit(LoginState.InProgress)
+                        }
+                    }
+                }
+                .stateIn(viewModelScope)
         }
     }
 
     private fun result(result: Flow<Result>) {
 
-    }
-
-    fun saveUser(authResult: FirebaseAuthResult) {
-        when (authResult) {
-            is FirebaseAuthResult.Success -> {
-//                updateUser.invoke(LoginAction(UserModel(authResult.user?.displayName ?: "")))
-            }
-        }
     }
 }
 
