@@ -1,34 +1,34 @@
 package com.musicianhelper.base
 
 import androidx.lifecycle.ViewModel
-import com.musicianhelper.domain.base.Action
+import androidx.lifecycle.viewModelScope
 import com.musicianhelper.domain.base.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-abstract class BaseViewModel<S>(
+abstract class BaseViewModel<SR : StateRenderer, S : State<SR>>(
     private val dispatcher: CoroutineDispatcher,
     private val initialState: S
 ) : ViewModel() {
 
-    private val TAG = BaseViewModel::class.java.simpleName
-    protected val viewState: MutableStateFlow<S> = MutableStateFlow(initialState)
-    val actions: MutableSharedFlow<Action> = MutableSharedFlow()
+    protected val event = MutableSharedFlow<Event>()
 
-    protected fun getState(): StateFlow<S> = viewState
+    protected val statePublisher: MutableStateFlow<S> = MutableStateFlow(initialState)
 
-//    protected abstract fun processAction(action: Action): Flow<Result>
+    protected val navigatorEmitter: MutableSharedFlow<Navigation> = MutableSharedFlow()
 
-//    protected fun reduceState(previous: S, result: Result): S {
-//        return previous
-//    }
+    protected fun handleEvents(sharedFlow: SharedFlow<Event>) {
+        viewModelScope.launch {
+            sharedFlow.collect {
+                fireUseCase(it)
+            }
+        }
+    }
 
-//    protected abstract suspend fun result(eventObservable: Flow<Event>): Flow<Result>
+    protected abstract fun fireUseCase(event: Event)
 }

@@ -1,8 +1,9 @@
 package com.musicianhelper.base
 
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 interface StatePresenter<SR : StateRenderer, S : State<SR>> {
 
-    fun state(eventObservable: MutableSharedFlow<Event>): MutableSharedFlow<S>
+    fun state(eventObservable: MutableStateFlow<Event>): MutableStateFlow<S>
 }

@@ -9,5 +9,4 @@ class MusicianHelperApp : DaggerApplication() {
     override fun applicationInjector(): AndroidInjector<MusicianHelperApp> {
       return  DaggerMuzHelperComponent.factory().create(this)
     }
-
 }

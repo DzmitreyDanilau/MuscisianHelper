@@ -9,7 +9,7 @@ apply from: '../dependencies.gradle'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.musicianhelper"
@@ -47,6 +47,7 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':authentication')
+    implementation project(':domain')
 
     implementation androidx.coreKtx
     implementation androidx.appcompat
@@ -80,9 +81,6 @@ dependencies {
     implementation uiUtil.formEditText
 
     implementation util.timber
-
-    implementation firebase.authKtx
-    implementation firebase.auth
 
     //test
     testImplementation 'junit:junit:4.13'

@@ -1,18 +1,17 @@
-package com.musicianhelper.auth.login
+package com.musicianhelper
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import com.musicianhelper.auth.login.SignInViewModelDelegate
 import javax.inject.Inject
 
-@FlowPreview
-@ExperimentalCoroutinesApi
-class LoginViewModelFactory @Inject constructor(
+class MainActivityViewModelFactory @Inject constructor(
+//    private val signInViewModelComponent: SignInViewModelDelegate
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return SignInViewModel() as T
+        return MainActivityViewModel() as T
     }
 }
+

@@ -7,7 +7,7 @@ apply from: '../dependencies.gradle'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion min_sdk_version
@@ -36,14 +36,17 @@ android {
 dependencies {
 
     api project(':domain')
+
     implementation kotlin.stdlib8
 
     implementation kotlin_coroutines.core
 
     implementation firebase.authKtx
     implementation firebase.auth
+    implementation firebase.authUi
     implementation google.playServicesAuth
     implementation firebase.playServices
+    implementation util.timber
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
